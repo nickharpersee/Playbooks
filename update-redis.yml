@@ -1,0 +1,47 @@
+---
+- hosts: all
+  gather_facts: yes
+  become: yes
+
+  tasks:
+        - name: Unhold Redis
+          ansible.builtin.dpkg_selections:
+            name: redis
+            selection: install
+        - name: Unhold Redis-Server
+          ansible.builtin.dpkg_selections:
+            name: redis-server
+            selection: install
+        - name: Unhold Redis-Tools
+          ansible.builtin.dpkg_selections:
+            name: redis-server
+            selection: install
+        - name: Update apt packages
+          apt:
+            upgrade: no
+            update_cache: yes
+            cache_valid_time: 86400
+        - name: Update Redis
+          ansible.builtin.apt:
+            name: redis
+            state: latest
+        - name: Update Redis-Server
+          ansible.builtin.apt:
+            name: redis-server
+            state: latest
+        - name: Update Redis Tools
+          ansible.builtin.apt:
+            name: redis-tools
+            state: latest
+        - name: Hold Redis
+          ansible.builtin.dpkg_selections:
+            name: redis
+            selection: hold
+        - name: Hold Redis-Server
+          ansible.builtin.dpkg_selections:
+            name: redis-server
+            selection: hold
+        - name: Hold Redis-Tools
+          ansible.builtin.dpkg_selections:
+            name: redis-server
+            selection: hold
