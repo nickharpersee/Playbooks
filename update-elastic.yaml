@@ -1,0 +1,35 @@
+---
+- hosts: all
+  gather_facts: yes
+  become: yes
+
+  tasks:
+        - name: Unhold ElasticSearch
+          ansible.builtin.dpkg_selections:
+            name: elasticsearch
+            selection: install
+        - name: Unhold Kibana
+          ansible.builtin.dpkg_selections:
+            name: kibana
+            selection: install
+        - name: Update apt packages
+          apt:
+            upgrade: no
+            update_cache: yes
+            cache_valid_time: 86400
+        - name: Update ElasticSearch
+          ansible.builtin.apt:
+            name: elasticsearch
+            state: latest
+        - name: Update Kibana
+          ansible.builtin.apt:
+            name: kibana
+            state: latest
+        - name: Hold ElasticSearch
+          ansible.builtin.dpkg_selections:
+            name: elasticsearch
+            selection: hold
+        - name: Hold Kibana
+          ansible.builtin.dpkg_selections:
+            name: kibana
+            selection: hold
