@@ -4,6 +4,18 @@
   become: yes
 
   tasks:
+    - name: Hold Redis
+          ansible.builtin.dpkg_selections:
+            name: redis
+            selection: hold
+    - name: Hold Redis-Server
+          ansible.builtin.dpkg_selections:
+            name: redis-server
+            selection: hold
+    - name: Hold Redis-Tools
+          ansible.builtin.dpkg_selections:
+            name: redis-server
+            selection: hold
     - name: Perform an upgrade.
       ansible.builtin.apt:
         upgrade: full
